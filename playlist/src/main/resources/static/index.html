@@ -1,0 +1,31 @@
+<html>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.6.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.4/firebase-auth.js"></script>
+</head>
+<body>
+<script>
+    const firebaseConfig = {
+      apiKey: "****",
+      authDomain: "****",
+      projectId: "******",
+      storageBucket: "*****",
+      messagingSenderId: "*****",
+      appId: "******",
+      measurementId: "******"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const handleGoogleLogin = async () => {
+      const result = await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      console.log(result.user.uid);
+      console.log(await result.user.getIdToken());
+    }
+  </script>
+
+<button onclick="handleGoogleLogin();">google login</button>
+</body>
+
+
+</html>
