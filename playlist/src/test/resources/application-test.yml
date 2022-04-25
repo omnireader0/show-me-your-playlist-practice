@@ -4,3 +4,8 @@ spring:
     url: jdbc:mysql://localhost:3306/playlist?serverTimezone=Asia/Seoul
     username: root
     password: 5679
+
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: create

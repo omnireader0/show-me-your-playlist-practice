@@ -33,9 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class MemberControllerTest {
 
-    private static final String uid = "213";
-    private static final String email = "GODRIC@daum.com";
-    private static final String name = "가드릭";
+    private static final String uid = "EtciB6p5SIeQIsbgRZ2T3Cnhkak2";
+    private static final String email = "omnireader0@gmail.com";
+    private static final String nickname = "Yujin Hong";
 
     @Autowired
     private MemberService memberService;
@@ -52,10 +52,10 @@ class MemberControllerTest {
 
     @Test
     void 로그인_테스트() throws Exception {
-        memberService.register(email, name, uid);
+        memberService.register(uid, email, nickname);
 
         ResultActions resultActions = mockMvc.perform(
-                get("/members/me")
+                get("/members/login")
                         .header("Authorization", "Bearer " + uid)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -67,7 +67,6 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("uid").value(uid))
                 .andExpect(jsonPath("email").value(email))
-                .andExpect(jsonPath("name").value(name));
-
+                .andExpect(jsonPath("nickname").value(nickname));
     }
 }

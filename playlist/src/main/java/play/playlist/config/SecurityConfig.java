@@ -38,7 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // 로그인, 메인페이지, 리소스
         web.ignoring()
-                .antMatchers("/")
-                .antMatchers("/resources/**");
+                .antMatchers("/", "/members", "/resources/**");
     }
 }

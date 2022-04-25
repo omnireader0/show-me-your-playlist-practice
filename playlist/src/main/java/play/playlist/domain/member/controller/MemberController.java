@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +33,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("")
-    public UserInfo register(@RequestHeader("Authorization") String authorization,
-                             @RequestBody RegisterInfo registerInfo) {
+    public ResponseEntity<UserInfo> register(@RequestHeader("Authorization") String authorization,
+                                             @RequestBody RegisterInfo registerInfo) {
         // TOKEN을 가져온다.
         FirebaseToken decodedToken;
         try {
@@ -45,14 +45,16 @@ public class MemberController {
                     "{\"code\":\"INVALID_TOKEN\", \"message\":\"" + e.getMessage() + "\"}");
         }
         // 사용자를 등록한다.
-        Member registeredUser = memberService.register(
+        UserInfo registeredUser = memberService.register(
                 decodedToken.getUid(), decodedToken.getEmail(), registerInfo.getNickname());
-        return new UserInfo(registeredUser);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(registeredUser);
     }
 
     @GetMapping("/login")
     public UserInfo  login(Authentication authentication) {
-        Member member = ((Member) authentication.getPrincipal());
+        Member member = ((Member)authentication.getPrincipal());
         return new UserInfo(member);
     }
 }

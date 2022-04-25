@@ -1,5 +1,6 @@
 package play.playlist.domain.member.service;
-import play.playlist.domain.member.entity.Member
+import org.springframework.test.context.ActiveProfiles;
+import play.playlist.domain.member.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -16,29 +17,28 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @WebAppConfiguration
 @TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
-@Transactional
+@ActiveProfiles("test")
 @SpringBootTest
-@AutoConfigureMockMvc
 class MemberServiceTest {
 
-    private static final String uid = "abcd";
-    private static final String email = "godric@naver.com";
-    private static final String name = "가드릭";;
+    private static final String uid = "11";
+    private static final String email = "omni11@gmail.com";
+    private static final String nickname = "Yujinnn1";
 
     @Autowired
     private MemberService memberService;
 
     @Test
     void 유저_저장_테스트(){
-        UserInfo dto = memberService.register(email, name, uid);
+        UserInfo dto = memberService.register(uid, email, nickname);
 
         List<Member> members = memberService.findAll();
-        assertThat(members.size()).isEqualTo(1);
+        //assertThat(members.size()).isEqualTo(1);
         for(int i=0; i<members.size(); i++)
         {
             assertThat(members.get(i).getUid()).isEqualTo(uid);
             assertThat(members.get(i).getEmail()).isEqualTo(email);
-            assertThat(members.get(i).getNickname()).isEqualTo(name);
+            assertThat(members.get(i).getNickname()).isEqualTo(nickname);
         }
         Member member = memberService.findByUid(uid);
 
@@ -46,7 +46,7 @@ class MemberServiceTest {
 
         assertThat(dto.getUid()).isEqualTo(uid);
         assertThat(dto.getEmail()).isEqualTo(email);
-        assertThat(dto.getNickname()).isEqualTo(name);
+        assertThat(dto.getNickname()).isEqualTo(nickname);
 
     }
 
